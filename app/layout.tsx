@@ -7,8 +7,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host") || "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
-  const title = "选题决策｜国内付费原创 V1";
-  const description = "从现实热点或成熟爆款出发，完成可确认、可校准的国内付费短剧选题决策。";
+  const title = "专业短剧 AI 创作助手｜国内付费短剧｜选题决策";
+  const description = "国内付费短剧选题模块，提供原创选题与对标迭代两种并列创作方式。";
 
   return {
     metadataBase: new URL(origin),
@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       type: "website",
       url: origin,
-      images: [{ url: `${origin}/og.png`, width: 1731, height: 909, alt: "选题决策｜国内付费原创 V1" }],
+      images: [{ url: `${origin}/og.png`, width: 1730, height: 909, alt: "专业短剧 AI 创作助手｜国内付费短剧｜选题决策" }],
     },
     twitter: {
       card: "summary_large_image",

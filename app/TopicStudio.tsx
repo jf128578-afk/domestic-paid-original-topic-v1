@@ -320,7 +320,7 @@ export default function TopicStudio() {
     if (state.screen === "route") return <RouteChoice onChoose={chooseRoute} />;
     if (state.screen === "a_source") {
       return (
-        <Panel eyebrow="A｜热点 / 现实原创" title="从一条现实原料开始" description="让 AI 找近期热点，或直接使用你手里的现实素材。自己有素材时不会被强制重新搜索。">
+        <Panel eyebrow="A｜原创选题" title="从一条现实原料开始" description="在国内付费短剧框架下，让 AI 找近期热点，或直接使用你手里的现实素材。自己有素材时不会被强制重新搜索。">
           <div className="action-grid">
             <button className="route-card compact" onClick={loadHotspots} disabled={loading}>
               <span className="route-index">A1</span><strong>AI 帮我找近期热点</strong><small>检索后只展示少量真正有戏的候选</small>
@@ -356,7 +356,7 @@ export default function TopicStudio() {
     }
     if (state.screen === "b_source") {
       const lookup = state.draft.benchmarkLookup as { alternatives?: ChoiceOption[]; message?: string } | undefined;
-      return <Panel eyebrow="B｜已有对标 → 新选题" title="你想学习哪一部作品？" description="最低只需要作品名。AI 会先查选题级公开资料，同名或多版本时才请你确认。"><div className="focus-card"><label htmlFor="benchmark">作品名</label><input id="benchmark" value={freeText} onChange={(event) => setFreeText(event.target.value)} placeholder="例如：《人面桃花长相忆》；也可补充平台或主角" /><p>不需要先写一篇对标分析。</p><div className="sample-row"><span>比赛示范</span>{BENCHMARK_CASES.map((title) => <button type="button" key={title} onClick={() => setFreeText(title)}>{title}</button>)}</div></div>{lookup?.alternatives && lookup.alternatives.length > 0 && <div className="lookup-options"><strong>找到多个可能版本，请确认：</strong>{lookup.alternatives.map((item) => <button className="secondary" key={item.id} onClick={() => decomposeTitle(item.title)}>{item.title} — {item.summary}</button>)}</div>}<button className="primary" onClick={decomposeBenchmark} disabled={loading || !freeText.trim()}>识别并拆解</button></Panel>;
+      return <Panel eyebrow="B｜对标迭代" title="你想学习哪一部作品？" description="从成熟爆款出发，理解其有效机制，再通过对标置换或选题升级形成国内付费短剧新选题。最低只需要作品名。"><div className="focus-card"><label htmlFor="benchmark">作品名</label><input id="benchmark" value={freeText} onChange={(event) => setFreeText(event.target.value)} placeholder="例如：《人面桃花长相忆》；也可补充平台或主角" /><p>不需要先写一篇对标分析。</p><div className="sample-row"><span>比赛示范</span>{BENCHMARK_CASES.map((title) => <button type="button" key={title} onClick={() => setFreeText(title)}>{title}</button>)}</div></div>{lookup?.alternatives && lookup.alternatives.length > 0 && <div className="lookup-options"><strong>找到多个可能版本，请确认：</strong>{lookup.alternatives.map((item) => <button className="secondary" key={item.id} onClick={() => decomposeTitle(item.title)}>{item.title} — {item.summary}</button>)}</div>}<button className="primary" onClick={decomposeBenchmark} disabled={loading || !freeText.trim()}>识别并拆解</button></Panel>;
     }
     if (state.screen === "b_breakdown") {
       const breakdown = state.draft.breakdown as BenchmarkBreakdown;
@@ -383,13 +383,13 @@ export default function TopicStudio() {
   return (
     <main className="studio-shell">
       <header className="topbar">
-        <div className="brand"><span className="brand-mark">题</span><div><strong>选题决策</strong><small>国内付费原创 V1</small></div></div>
+        <div className="brand"><span className="brand-mark">剧</span><div><strong>专业短剧 AI 创作助手</strong><small>国内付费短剧｜选题决策</small></div></div>
         {state.route && <button className="text-button" onClick={reset}>重新开始</button>}
       </header>
 
       {state.route && (
         <div className="progress-wrap" aria-label={`当前进度 ${progress}%`}>
-          <div className="progress-copy"><span>{state.route === "A" ? "热点 / 现实原创" : "已有对标 → 新选题"}</span><span>{progress}%</span></div>
+          <div className="progress-copy"><span>{state.route === "A" ? "原创选题" : "对标迭代"}</span><span>{progress}%</span></div>
           <div className="progress-track"><span style={{ width: `${progress}%` }} /></div>
           <div className="step-row">{steps.map(([id, label], index) => <span key={id} className={index <= currentIndex ? "active" : ""}>{label}</span>)}</div>
         </div>
@@ -402,19 +402,19 @@ export default function TopicStudio() {
         <div className="demo-banner"><strong>本机 Codex 模式</strong><span>当前使用已登录的 ChatGPT 账号生成{state.modelName ? ` · ${state.modelName}` : ""}。</span></div>
       )}
       {state.modelMode === "live" && (
-        <div className="live-banner"><strong>真实生成模式</strong><span>当前结果来自云端模型{state.modelName ? ` · ${state.modelName}` : ""}；A 路线热点与 B 路线作品识别会读取公开网络资料。</span></div>
+        <div className="live-banner"><strong>真实生成模式</strong><span>当前结果来自云端模型{state.modelName ? ` · ${state.modelName}` : ""}；原创选题的热点检索与对标迭代的作品识别会读取公开网络资料。</span></div>
       )}
 
       <section className="workspace">{screen}</section>
       {loading && <div className="generating" role="status"><span /><div><strong>AI 正在处理当前步骤</strong><small>已确认的内容不会被改写</small></div></div>}
       {error && <div className="error-toast" role="alert">{error}</div>}
-      <footer className="site-footer"><span>AI 扩大可能性，人决定方向。</span><span>当前只做到选题汇报卡</span></footer>
+      <footer className="site-footer"><span>AI 扩大可能性，人决定方向。</span><span>当前开放：国内付费短剧｜选题决策</span></footer>
     </main>
   );
 }
 
 function RouteChoice({ onChoose }: { onChoose: (route: "A" | "B") => void }) {
-  return <div className="hero"><div className="hero-copy"><span className="eyebrow">选题决策｜国内付费原创 V1</span><span className="showcase-badge">真实生成 · 演示兜底</span><h1>今天，我们到底<br />写什么？</h1><p>输入新的现实素材或任意对标作品。AI 负责联网检索、拆解和发散，每个关键方向仍由你确认。</p><div className="case-note"><strong>真实模式优先</strong><span>云端服务不可用时，自动使用 4 个回归案例保证比赛流程可继续体验。</span></div></div><div className="route-stack"><button className="route-card" onClick={() => onChoose("A")}><span className="route-index">路线 A</span><strong>热点 / 现实原创</strong><p>实时寻找近期公开热点，或从你输入的现实事件中提炼真正有戏的创作切口。</p><span className="route-link">开始寻找新选题 <b>→</b></span></button><button className="route-card dark" onClick={() => onChoose("B")}><span className="route-index">路线 B</span><strong>已有对标 → 新选题</strong><p>输入作品名，先搜索并识别作品，再做功能级置换或更深的选题升级。</p><span className="route-link">从一部作品开始 <b>→</b></span></button></div></div>;
+  return <div className="hero"><div className="hero-copy"><span className="eyebrow">专业短剧 AI 创作助手</span><span className="showcase-badge">当前开放模块</span><h1>国内付费短剧<br />选题决策</h1><p>这是同一个国内付费选题模块的两种创作方式：从热点与现实素材创造原创选题，或从成熟爆款出发做对标迭代。AI 负责检索、拆解和发散，每个关键方向仍由你确认。</p><div className="case-note"><strong>真实生成 · 演示兜底</strong><span>云端服务不可用时，自动使用 4 个回归案例保证完整流程可继续体验。</span></div></div><div className="route-stack"><div className="route-group-label"><strong>选择一种创作方式</strong><span>两种入口共享同一套国内付费选题决策框架，并统一输出选题汇报卡。</span></div><button className="route-card" onClick={() => onChoose("A")}><span className="route-index">创作方式 A</span><strong>原创选题</strong><p>在国内付费短剧框架下，从近期热点、现实事件或你手里的素材出发，创造一个全新的选题。</p><span className="route-link">从现实原料开始 <b>→</b></span></button><button className="route-card dark" onClick={() => onChoose("B")}><span className="route-index">创作方式 B</span><strong>对标迭代</strong><p>从已有成熟爆款出发，理解其有效机制，再通过对标置换或选题升级形成一个新选题。</p><span className="route-link">从成熟作品开始 <b>→</b></span></button></div></div>;
 }
 
 function Panel({ eyebrow, title, description, children }: { eyebrow: string; title: string; description: string; children: React.ReactNode }) {

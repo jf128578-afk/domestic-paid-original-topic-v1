@@ -14,7 +14,7 @@ test("renders the finished topic decision product", async () => {
   const response = await (await worker()).fetch(new Request("http://localhost/", { headers: { accept: "text/html" } }), env, ctx);
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /<title>选题决策｜国内付费原创 V1<\/title>/);
+  assert.match(html, /<title>专业短剧 AI 创作助手｜国内付费短剧｜选题决策<\/title>/);
   assert.match(html, /正在恢复你的确认状态/);
   assert.match(html, /TopicStudio-/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
